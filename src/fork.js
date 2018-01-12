@@ -90,6 +90,5 @@ class Fork {
   }
 }
 
-module.exports = Fork
-
 // シングルトンの処理に複数の処理をコールした時に、複数のリクエストが同時に来たとしても、一番最初に処理が終わった物が戻り値として帰ってくる
+module.exports = Fork
