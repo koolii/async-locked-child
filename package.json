@@ -1,0 +1,30 @@
+{
+  "name": "locked-child",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koolii/async-locked-child.git"
+  },
+  "keywords": [
+    "async",
+    "locked",
+    "child_process",
+    "javascript",
+    "node.js"
+  ],
+  "author": "koolii",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koolii/async-locked-child/issues"
+  },
+  "homepage": "https://github.com/koolii/async-locked-child#readme",
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb": "^16.1.0"
+  }
+}
