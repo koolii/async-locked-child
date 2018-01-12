@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "semi": [
+      2,
+      "never"
+    ],
+    "no-console": "warn",
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "js": "never"
+      }
+    ],
+    "no-param-reassign": "off",
+    "global-require": "off",
+    "import/no-dynamic-require": "off"
+  }
+}
