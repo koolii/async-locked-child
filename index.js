@@ -9,10 +9,7 @@ class Fork {
     this.p = null
     // task == msg
     this.q = nosync.queue(async (task, done) => {
-      console.log(`msg: ${JSON.stringify(task)}`)
-
       const result = await this.send(task)
-      console.log(`task-result: ${JSON.stringify(result)}`)
 
       // task.callback(result);
       task.resolve(result)
