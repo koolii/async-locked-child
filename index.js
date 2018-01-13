@@ -3,8 +3,8 @@ const childProcess = require('child_process')
 const nosync = require('async')
 
 class Fork {
-  constructor(module, events) {
-    this.module = module
+  constructor(filename, events) {
+    this.filename = filename
     this.events = events
     this.p = null
     // task == msg
@@ -54,11 +54,11 @@ class Fork {
   makeChild() {
     return new Promise((resolve, reject) => {
       try {
-        if (!this.module) {
-          throw Error('requires module member')
+        if (!this.filename) {
+          throw Error('requires filename member')
         }
 
-        const child = childProcess.fork(`./${this.module}`, [], {
+        const child = childProcess.fork(`./${this.filename}`, [], {
           cwd: path.resolve(__dirname),
         })
 
