@@ -2,6 +2,7 @@ const path = require('path')
 const childProcess = require('child_process')
 const nosync = require('async')
 
+const countup = getCountUppper()
 class Fork {
   constructor(filename, events) {
     this.filename = filename
@@ -16,6 +17,7 @@ class Fork {
 
       done(result)
     }, 1)
+    this.resolvers = {}
   }
 
   async init() {
@@ -36,19 +38,16 @@ class Fork {
   }
 
   request(msg) {
-    return new Promise((resolve) => {
-      msg.resolve = resolve
-      this.q.push(msg)
+    return new Promise((resolve, reject) => {
+      const idx = countup()
+      this.resolvers[idx] = resolve
+
+      const result = await this.send(msg)
     })
   }
 
   async send(msg) {
-    return new Promise((resolve) => {
-      this.p.once('message', (res) => {
-        resolve(res)
-      })
-      this.p.send(msg)
-    })
+    this.p.send(msg)
   }
 
   makeChild() {
@@ -73,10 +72,9 @@ class Fork {
         })
 
         // if this call returns anything, it doesn't occur anything
-        // child.on('message', (res) => {
-        child.on('message', () => {
-          // you can understand that setted child-callback executes consecutively
-          // console.log(`logger: ${res}, ${JSON.stringify(res)}`);
+        child.on('message', ({res, idx}) => {
+          const resolve = this.resolvers[idx]
+          resolve(res)
         })
 
         resolve(child)
@@ -85,6 +83,22 @@ class Fork {
       }
     })
   }
+}
+
+function getCountUppper() {
+  function* g() {
+    let idx = 0
+    while(true) {
+      yield idx
+      if (Number.MAX_SAFE_INTEGER === idx) {
+        idx = 0
+      } else {
+        idx += 1
+      }
+    }
+  }
+  const generator = g()
+  return () => generator.next().value
 }
 
 // シングルトンの処理に複数の処理をコールした時に、複数のリクエストが同時に来たとしても、一番最初に処理が終わった物が戻り値として帰ってくる
